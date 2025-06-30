@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ferramenta de Unfollow para Instagram (Uso Educacional)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .code-block {
+            background-color: #1E293B; /* slate-800 */
+            color: #E2E8F0; /* slate-200 */
+            border-radius: 0.5rem;
+            padding: 1rem;
+            position: relative;
+            overflow-x: auto;
+        }
+        .copy-button {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background-color: #334155; /* slate-700 */
+            color: white;
+            border: none;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .copy-button:hover {
+            background-color: #475569; /* slate-600 */
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-200">
+    <div class="container mx-auto p-4 md:p-8 max-w-4xl">
+
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-white mb-2">Ferramenta de Unfollow para Instagram</h1>
+            <p class="text-slate-400">Um script para automatizar o processo de "deixar de seguir".</p>
+        </header>
+
+        <!-- Warning Section -->
+        <div class="bg-red-800 border-l-4 border-red-500 text-red-100 p-4 rounded-md mb-8" role="alert">
+            <p class="font-bold text-lg">AVISO IMPORTANTE: LEIA ANTES DE USAR</p>
+            <p class="mt-2">O uso de automação viola os Termos de Serviço do Instagram. Sua conta pode ser **bloqueada ou banida**. Use esta ferramenta com moderação e por sua conta e risco. Recomendamos não deixar de seguir mais de 150-200 pessoas por dia para reduzir os riscos.</p>
+        </div>
+
+        <!-- Instructions Section -->
+        <div class="bg-slate-800 p-6 rounded-lg shadow-lg mb-8">
+            <h2 class="text-2xl font-semibold text-white mb-4 border-b border-slate-700 pb-2">Como Usar o Script (Passo a Passo)</h2>
+            <ol class="list-decimal list-inside space-y-4 text-slate-300">
+                <li>
+                    <strong>Acesse seu Perfil:</strong> Abra o Instagram no seu navegador (Chrome, Firefox, etc.) e vá para a sua página de perfil.
+                </li>
+                <li>
+                    <strong>Abra a Lista "Seguindo":</strong> Clique no número de pessoas que você está <span class="font-semibold text-cyan-400">"seguindo"</span> para abrir a lista completa.
+                </li>
+                <li>
+                    <strong>Role a Página:</strong> Role a lista um pouco para baixo para carregar as contas que você deseja deixar de seguir. O script só funcionará nas contas que estão visíveis na tela.
+                </li>
+                <li>
+                    <strong>Abra o Console do Desenvolvedor:</strong>
+                    <ul class="list-disc list-inside mt-2 ml-4 bg-slate-700 p-3 rounded-md">
+                        <li>No Windows/Linux: Pressione <kbd class="bg-slate-600 px-2 py-1 rounded">Ctrl</kbd> + <kbd class="bg-slate-600 px-2 py-1 rounded">Shift</kbd> + <kbd class="bg-slate-600 px-2 py-1 rounded">J</kbd></li>
+                        <li>No Mac: Pressione <kbd class="bg-slate-600 px-2 py-1 rounded">Cmd</kbd> + <kbd class="bg-slate-600 px-2 py-1 rounded">Option</kbd> + <kbd class="bg-slate-600 px-2 py-1 rounded">J</kbd></li>
+                    </ul>
+                    <p class="mt-2 text-sm text-slate-400">Uma nova janela ou painel aparecerá no seu navegador. Certifique-se de estar na aba <span class="font-semibold text-cyan-400">"Console"</span>.</p>
+                </li>
+                <li>
+                    <strong>Copie e Cole o Código:</strong> Copie o código abaixo (use o botão "Copiar Código") e cole-o no Console que você acabou de abrir.
+                </li>
+                <li>
+                    <strong>Execute o Script:</strong> Pressione <kbd class="bg-slate-600 px-2 py-1 rounded">Enter</kbd>. A automação começará e você verá mensagens no console para cada pessoa que deixar de seguir.
+                </li>
+                 <li>
+                    <strong>Para Parar:</strong> Para parar o script a qualquer momento, basta fechar a aba do Instagram ou atualizar a página.
+                </li>
+            </ol>
+        </div>
+
+        <!-- Code Section -->
+        <div>
+            <h2 class="text-2xl font-semibold text-white mb-4">Código JavaScript</h2>
+            <div class="code-block">
+                <button id="copyButton" class="copy-button">Copiar</button>
+                <pre><code id="scriptCode">
+// --- Configurações ---
+// Defina o número máximo de pessoas para dar unfollow nesta sessão.
+const maxUnfollows = 50; 
+
+// Intervalo de tempo em segundos (mínimo e máximo) entre cada unfollow.
+// Isso simula o comportamento humano para evitar bloqueios.
+const minDelaySeconds = 8;
+const maxDelaySeconds = 20;
+// --------------------
+
+// Função para criar uma pausa com tempo aleatório
+function sleep(seconds) {
+    console.log(`%cPróxima ação em ${seconds.toFixed(1)} segundos...`, 'color: #84cc16');
+    return new Promise(resolve => setTimeout(resolve, seconds * 1000));
+}
+
+// Função principal da automação
+async function startUnfollow() {
+    console.log('%c--- INICIANDO SCRIPT DE UNFOLLOW ---', 'color: #22d3ee; font-size: 16px; font-weight: bold;');
+    console.log(`%cAVISO: O script tentará deixar de seguir até ${maxUnfollows} perfis.`, 'color: #f87171;');
+
+    // Seleciona todos os botões "Seguindo" visíveis na tela.
+    // O seletor do Instagram pode mudar. Se não funcionar, ele precisará ser atualizado.
+    const followingButtons = Array.from(document.querySelectorAll('button')).filter(button => button.textContent === 'Seguindo');
+
+    if (followingButtons.length === 0) {
+        console.error('%cERRO: Nenhum botão "Seguindo" foi encontrado. Role a lista de "seguindo" para carregar os perfis e tente novamente.', 'color: #facc15;');
+        return;
+    }
+
+    let unfollowedCount = 0;
+    for (const button of followingButtons) {
+        if (unfollowedCount >= maxUnfollows) {
+            console.log(`%cLimite de ${maxUnfollows} unfollows atingido. Encerrando.`, 'color: #22c55e;');
+            break;
+        }
+
+        // Rola a página para garantir que o botão esteja visível
+        button.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        await sleep(1); // pequena pausa para a rolagem
+
+        // 1. Clica no botão "Seguindo"
+        button.click();
+        await sleep(1.5); // Espera o pop-up de confirmação aparecer
+
+        // 2. Encontra e clica no botão de confirmação "Deixar de seguir"
+        const confirmButton = Array.from(document.querySelectorAll('button')).find(b => b.textContent === 'Deixar de seguir' && b.style.color === 'rgb(237, 73, 86)');
+        
+        if (confirmButton) {
+            const userHandle = button.closest('div[role="dialog"] > div > div > div:nth-child(2) > div:nth-child(1) > div > div > span > a')?.textContent || 'usuário desconhecido';
+            confirmButton.click();
+            unfollowedCount++;
+            console.log(`%c(${unfollowedCount}/${maxUnfollows}) Deixou de seguir: @${userHandle}`, 'color: #e879f9;');
+        } else {
+            // Se não achar o botão de confirmação, pode ser um perfil que não abriu o pop-up.
+            // Clicar novamente no botão "Seguindo" geralmente fecha a ação.
+            console.warn('%cAVISO: Não foi possível encontrar o botão de confirmação. Tentando fechar e pular para o próximo.', 'color: #facc15;');
+            if(button.textContent === 'Seguir'){ // Se o botão mudou para 'Seguir', o unfollow funcionou
+                 unfollowedCount++;
+                 console.log(`%c(${unfollowedCount}/${maxUnfollows}) Deixou de seguir um perfil (método alternativo).`, 'color: #e879f9;');
+            } else {
+                button.click(); // Tenta fechar
+            }
+        }
+        
+        // Pausa longa e aleatória antes de ir para o próximo
+        const randomDelay = Math.random() * (maxDelaySeconds - minDelaySeconds) + minDelaySeconds;
+        await sleep(randomDelay);
+    }
+
+    console.log(`%c--- SCRIPT CONCLUÍDO ---`, 'color: #22d3ee; font-size: 16px; font-weight: bold;');
+    console.log(`%cTotal de perfis que deixaram de ser seguidos nesta sessão: ${unfollowedCount}`, 'color: #22c55e;');
+}
+
+// Para iniciar, cole este código no console e chame a função:
+// startUnfollow();
+                </code></pre>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Lógica para o botão de copiar
+        const copyButton = document.getElementById('copyButton');
+        const scriptCode = document.getElementById('scriptCode');
+
+        copyButton.addEventListener('click', () => {
+            // Extrai o texto do código, removendo a última linha de comentário
+            let codeText = scriptCode.textContent.trim();
+            const lines = codeText.split('\n');
+            lines.pop(); // Remove a linha "// startUnfollow();"
+            codeText = lines.join('\n').trim();
+            
+            // Adiciona a chamada da função ao final do código a ser copiado
+            const codeToCopy = codeText + '\n\nstartUnfollow();';
+
+            // Usa a API do Clipboard para copiar o texto
+            navigator.clipboard.writeText(codeToCopy).then(() => {
+                copyButton.textContent = 'Copiado!';
+                setTimeout(() => {
+                    copyButton.textContent = 'Copiar';
+                }, 2000);
+            }).catch(err => {
+                console.error('Erro ao copiar o código: ', err);
+                // Fallback para navegadores mais antigos
+                try {
+                    const textArea = document.createElement('textarea');
+                    textArea.value = codeToCopy;
+                    document.body.appendChild(textArea);
+                    textArea.focus();
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    copyButton.textContent = 'Copiado!';
+                    setTimeout(() => {
+                        copyButton.textContent = 'Copiar';
+                    }, 2000);
+                } catch (e) {
+                    alert('Não foi possível copiar o código. Por favor, selecione e copie manualmente.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
