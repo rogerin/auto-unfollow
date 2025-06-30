@@ -75,7 +75,7 @@ async function startUnfollow() {
         await sleep(1.5); // Espera o pop-up de confirmação aparecer
 
         // 2. Encontra e clica no botão de confirmação "Deixar de seguir"
-        const confirmButton = Array.from(document.querySelectorAll('button')).find(b => b.textContent === 'Deixar de seguir' && b.style.color === 'rgb(237, 73, 86)');
+        const confirmButton = Array.from(document.querySelectorAll('button')).find(b => b.textContent === 'Deixar de seguir');
         
         if (confirmButton) {
             const userHandle = button.closest('div[role="dialog"] > div > div > div:nth-child(2) > div:nth-child(1) > div > div > span > a')?.textContent || 'usuário desconhecido';
